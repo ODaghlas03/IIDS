@@ -1,0 +1,15 @@
+[Unit]
+Description=IDS Detection Loop
+After=network.target
+
+[Service]
+Type=simple
+User=ids
+WorkingDirectory=/home/ids/ids
+ExecStart=/home/ids/ids/run_ids.sh
+Restart=always
+RestartSec=5
+Environment="PATH=/home/ids/ids/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target

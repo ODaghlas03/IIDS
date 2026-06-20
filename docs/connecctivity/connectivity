@@ -1,0 +1,45 @@
+ Fix — run these on Kali
+
+  # Add route so Kali sends 10.0.2.x traffic through this gateway
+  sudo ip route add 10.0.2.0/24 via 10.0.1.1
+
+  # Then verify
+  ping 10.0.2.10
+
+  To make it permanent on Kali (survives reboot), edit
+  /etc/network/interfaces:
+  auto eth0
+  iface eth0 inet static
+      address 10.0.1.10
+      netmask 255.255.255.0
+      gateway 10.0.1.1
+  Or if using NetworkManager, add it in the connection profile.
+
+  ---
+  Fix — run these on Ubuntu victim
+
+  # Add route so Ubuntu replies go back through this gateway
+  sudo ip route add 10.0.1.0/24 via 10.0.2.1
+
+  # Verify
+  ping 10.0.1.10
+
+  To make it permanent on Ubuntu (netplan), edit
+  /etc/netplan/00-installer-config.yaml (or whatever file exists):
+  network:
+    version: 2
+    ethernets:
+      eth0:
+        addresses: [10.0.2.10/24]
+        routes:
+          - to: 10.0.1.0/24
+            via: 10.0.2.1
+  Then sudo netplan apply.
+
+  ---
+  Why the IIDS itself can ping both — it has direct interfaces on
+  both subnets so it doesn't need to route. Kali→Ubuntu traffic
+  must go: Kali → 10.0.1.1 (IIDS) → 10.0.2.10 (Ubuntu), and the
+  reply: Ubuntu → 10.0.2.1 (IIDS) → 10.0.1.10 (Kali). Both hops
+  need their respective routes set.
+

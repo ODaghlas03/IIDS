@@ -1,0 +1,32 @@
+# Environment / secrets
+.env
+*.env
+
+# SQLite runtime database
+*.db
+*.db-shm
+*.db-wal
+
+# Captured traffic (large binary files)
+ids_backend/pcaps/*.pcap
+
+# CICFlowMeter output (runtime CSVs)
+ids_backend/flows/*.csv
+
+# Logs
+ids_backend/logs/*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# SSL private key
+system_config/ssl/*.key
+
+# macOS / editor
+.DS_Store
+.idea/
+*.swp
